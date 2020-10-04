@@ -4,7 +4,8 @@ import java.net.URI
 import java.util.UUID
 
 enum class Resources(val url: String) {
-    ROOT("/")
+    ROOT("/"),
+    TASK("/task")
 }
 
 class BaseLocation {

@@ -17,6 +17,12 @@
 			<artifactId>hexagonal-agent</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.hexagonal.task</groupId>
+			<artifactId>cqrs-task</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 
 </project>

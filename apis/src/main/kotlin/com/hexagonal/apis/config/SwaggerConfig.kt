@@ -18,7 +18,7 @@ class SwaggerConfig {
         return Docket(DocumentationType.SWAGGER_2)
                 .useDefaultResponseMessages(false)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.hexagonal.agent.api"))
+                .apis(RequestHandlerSelectors.basePackage("com.hexagonal"))
                 .paths(PathSelectors.any())
                 .build()
     }

@@ -1,5 +1,8 @@
 package com.hexagonal.task.infra.query.task
 
+import org.springframework.stereotype.Repository
+
+@Repository
 class TaskQueryRepository {
 
     fun findAllTask(): List<TaskProjection> {

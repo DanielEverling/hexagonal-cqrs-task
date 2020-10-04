@@ -14,12 +14,6 @@ import java.util.*
 @RequestMapping("/agent")
 class AgentResource constructor(val agentService: AgentService) {
 
-    @ApiOperation(value = "Create an agent", response = ResponseEntity::class, notes = "This operation creates an agent with the data passed", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiResponses(value = [
-        ApiResponse(code = 200, message = "Returns success message", response = ResponseEntity::class),
-        ApiResponse(code = 400, message = "If you have an error regarding a business validation", response = ResponseEntity::class),
-        ApiResponse(code = 500, message = "If we have any error not handled by the application", response = ResponseEntity::class)
-    ])
     @PostMapping
     fun create(agentDTO: AgentDTO): ResponseEntity<AgentDTO> {
         agentService.insert(agentDTO)
