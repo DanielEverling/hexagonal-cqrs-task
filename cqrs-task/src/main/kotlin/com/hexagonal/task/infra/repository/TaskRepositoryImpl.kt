@@ -20,4 +20,8 @@ class TaskRepositoryImpl : TaskRepository {
         TODO("Not yet implemented")
     }
 
+    override fun initializeTask(task: Task) {
+        TODO("Not yet implemented")
+    }
+
 }

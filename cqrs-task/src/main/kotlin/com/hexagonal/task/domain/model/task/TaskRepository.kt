@@ -9,4 +9,6 @@ interface TaskRepository {
     fun findById(id: UUID): Optional<Task>
 
     fun updateAgent(task: Task)
+
+    fun initializeTask(task: Task)
 }

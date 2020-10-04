@@ -3,6 +3,7 @@ package com.hexagonal.task.domain.model.task
 import com.cross.domain.Notification
 import com.cross.domain.toListNotification
 import org.amshove.kluent.`should be equal to`
+import org.amshove.kluent.`should be`
 import org.amshove.kluent.`should contain same`
 import org.amshove.kluent.`should not be`
 import org.junit.jupiter.api.Test
@@ -16,6 +17,7 @@ internal class ActivityTest {
         newActivity.description `should be equal to` "Realizar entrega do iphone"
         newActivity.date `should not be` null
         newActivity.status `should be equal to` ActivityStatus.WAITING
+        newActivity.initializeData `should be` null
     }
 
     @Test
@@ -31,6 +33,7 @@ internal class ActivityTest {
         newActivity.status `should be equal to` ActivityStatus.WAITING
         newActivity.initialize()
         newActivity.status `should be equal to` ActivityStatus.STARTED
+        newActivity.initializeData `should not be` null
     }
 
     @Test

@@ -22,6 +22,8 @@ data class Activity(val description: String, val date: LocalDateTime): Entity() 
 
     private var _status: ActivityStatus = ActivityStatus.WAITING
 
+    var initializeData: LocalDateTime? = null
+
     override fun validators() = listOf (
             description.isBlank(MessageBundle.message(FIELD_REQUIRED, "Descrição"))
     )
@@ -32,6 +34,7 @@ data class Activity(val description: String, val date: LocalDateTime): Entity() 
     fun initialize() {
         if (this.status == ActivityStatus.WAITING) {
             this._status = ActivityStatus.STARTED
+            this.initializeData = LocalDateTime.now()
         }
     }
 
