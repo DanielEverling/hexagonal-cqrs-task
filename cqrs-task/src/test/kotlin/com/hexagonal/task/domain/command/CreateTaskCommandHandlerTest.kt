@@ -65,8 +65,9 @@ internal class CreateTaskCommandHandlerTest {
         )
 
         createTaskCommandHandler.handler(createTaskCommand)
+        verify(eventPublisher, times(1)).publisher(any<DomainInvalidEvent>())
         verify(taskRepository, never()).insert(any<Task>())
         verify(eventPublisher, never()).publisher(any<CreatedTaskEvent>())
-        verify(eventPublisher, times(1)).publisher(any<DomainInvalidEvent>())
+
     }
 }

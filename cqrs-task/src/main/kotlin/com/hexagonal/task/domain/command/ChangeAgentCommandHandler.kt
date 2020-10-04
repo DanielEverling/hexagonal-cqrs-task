@@ -2,14 +2,15 @@ package com.hexagonal.task.domain.command
 
 import com.cross.commands.BaseCommandHandler
 import com.cross.events.commons.EntityNotFoundEvent
-import com.cross.events.task.InitializeTaskEvent
+import com.cross.events.task.ChangedAgentTaskEvent
 import com.hexagonal.task.domain.model.task.TaskRepository
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
-class InitializeTaskCommandHandler(private val taskRepository: TaskRepository) : BaseCommandHandler<InitializeTaskCommand>() {
+class ChangeAgentCommandHandler (private val taskRepository: TaskRepository): BaseCommandHandler<ChangeAgentCommand>() {
 
-    override fun handler(command: InitializeTaskCommand) {
+    override fun handler(command: ChangeAgentCommand) {
         val isThereTask = taskRepository.findById(command.taskId)
 
         if (isThereTask.isEmpty) {
@@ -18,9 +19,9 @@ class InitializeTaskCommandHandler(private val taskRepository: TaskRepository) :
         }
 
         val task = isThereTask.get()
-        task.initializeActivity()
-        taskRepository.initializeTask(task)
-        eventPublisher.publisher(InitializeTaskEvent(id = task.id, data = task.activity.initializeData!!))
+        task.changeAgent(command.newAgent)
+        taskRepository.updateAgent(task)
+        eventPublisher.publisher(ChangedAgentTaskEvent(id = task.id, agent = task.agent.name.value, data = LocalDateTime.now()))
     }
 
 }
