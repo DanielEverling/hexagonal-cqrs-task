@@ -4,6 +4,7 @@ import com.cross.commons.extensions.isBlank
 import com.cross.commons.extensions.isFuture
 import com.cross.domain.Entity
 import com.cross.domain.Notification
+import com.cross.domain.NotificationType
 import com.cross.infra.BIRTHDAY_INVALID
 import com.cross.infra.FIELD_REQUIRED
 import com.cross.infra.MessageBundle
@@ -31,11 +32,13 @@ data class Activity(val description: String, val date: LocalDateTime): Entity() 
     val status: ActivityStatus
         get() = _status
 
-    fun initialize() {
+    fun initialize(): List<Optional<Notification>> {
         if (this.status == ActivityStatus.WAITING) {
             this._status = ActivityStatus.STARTED
             this.initializeData = LocalDateTime.now()
+            return emptyList()
         }
+        return listOf(Optional.of(Notification("Atividade não pode ser inicializada pois está ${this.status}", NotificationType.BUSINESS_RULE)))
     }
 
     fun cancel() {

@@ -1,6 +1,7 @@
 package com.cross.domain
 
 
+import com.cross.events.commons.DomainEvent
 import java.util.*
 import java.lang.RuntimeException
 
@@ -36,10 +37,19 @@ open abstract class Entity : ValidatorsAware {
 
     private val _notifications: MutableCollection<Optional<Notification>> = mutableListOf()
 
+    private val _domainEvents: MutableList<DomainEvent> = mutableListOf();
+
     val notifications : List<Notification>
-        get() {
-            return _notifications.map { it.get() }
-        }
+        get() = _notifications.map { it.get() }
+
+    val domainEvents: List<DomainEvent>
+        get() = _domainEvents
+
+    val hasDomainEvents: Boolean = _domainEvents.isNotEmpty()
+
+    protected fun addDomainEvent(domainEvent: DomainEvent) {
+        this._domainEvents.add(domainEvent)
+    }
 
     protected fun validate() {
          validators()

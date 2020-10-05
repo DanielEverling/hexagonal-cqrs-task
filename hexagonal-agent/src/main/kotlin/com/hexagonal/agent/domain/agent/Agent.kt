@@ -11,6 +11,7 @@ import java.time.LocalDate
 import com.cross.infra.MessageBundle.Companion.message
 import com.cross.infra.FIELD_REQUIRED
 import com.cross.infra.BIRTHDAY_INVALID
+import java.time.LocalDateTime
 import java.util.*
 
 data class Agent private constructor(val id: UUID = UUID.randomUUID(),
@@ -27,6 +28,7 @@ data class Agent private constructor(val id: UUID = UUID.randomUUID(),
 
     fun inactive() {
         this.active = false
+        this.addDomainEvent(AgentInactivatedEvent(id = id, name = name.value, date = LocalDateTime.now()))
     }
 
     override fun validators() = listOf(

@@ -5,6 +5,7 @@ import java.util.Optional
 enum class NotificationType {
     INVALID_FIELD,
     DATA_INTEGRITY,
+    BUSINESS_RULE,
     INTEGRATION_SYSTEM,
     INTERNAL_SERVER_ERROR,
 }

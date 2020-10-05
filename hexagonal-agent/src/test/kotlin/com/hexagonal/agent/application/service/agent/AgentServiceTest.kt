@@ -4,6 +4,7 @@ import com.cross.commons.exception.BusinessException
 import com.cross.commons.exception.EntityNotFoundException
 import com.cross.domain.Notification
 import com.cross.domain.vo.Address
+import com.cross.events.commons.EventPublisher
 import com.hexagonal.agent.application.dto.agent.AgentDTO
 import com.hexagonal.agent.domain.agent.Agent
 import com.hexagonal.agent.domain.agent.AgentRepository
@@ -23,13 +24,15 @@ import java.util.*
 
 internal class AgentServiceTest {
 
-    private val agentRepository: AgentRepository = mock(AgentRepository::class)
+    private val agentRepository: AgentRepository = mock()
+
+    private val eventPublisher: EventPublisher = mock()
 
     private lateinit var agentService: AgentService
 
     @BeforeEach
     fun `setUp`() {
-        agentService = AgentService(agentRepository)
+        agentService = AgentService(agentRepository, eventPublisher)
     }
 
     @Test

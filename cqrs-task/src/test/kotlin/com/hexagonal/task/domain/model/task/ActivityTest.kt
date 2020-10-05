@@ -1,6 +1,7 @@
 package com.hexagonal.task.domain.model.task
 
 import com.cross.domain.Notification
+import com.cross.domain.NotificationType
 import com.cross.domain.toListNotification
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should be`
@@ -28,7 +29,18 @@ internal class ActivityTest {
     }
 
     @Test
-    fun `should initializing an activity`() {
+    fun `should not initializing an activity when it is canceled`() {
+        val newActivity = Activity(description = "Realizar entrega do iphone", date = LocalDateTime.now().plusDays(7))
+        newActivity.status `should be equal to` ActivityStatus.WAITING
+        newActivity.cancel()
+        newActivity.status `should be equal to` ActivityStatus.CANCELED
+        val notifications = newActivity.initialize()
+        newActivity.status `should be equal to` ActivityStatus.CANCELED
+        notifications.toListNotification().first() `should be equal to` Notification("Atividade não pode ser inicializada pois está CANCELED", NotificationType.BUSINESS_RULE)
+    }
+
+    @Test
+    fun `should not initializing an activity`() {
         val newActivity = Activity(description = "Realizar entrega do iphone", date = LocalDateTime.now().plusDays(7))
         newActivity.status `should be equal to` ActivityStatus.WAITING
         newActivity.initialize()

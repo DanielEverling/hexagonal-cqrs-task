@@ -3,6 +3,7 @@ package com.hexagonal.agent.application.service.agent
 import com.cross.commons.exception.BusinessException
 import com.cross.commons.exception.EntityNotFoundException
 import com.cross.domain.ResultEntity
+import com.cross.events.commons.EventPublisher
 import com.hexagonal.agent.application.dto.agent.AgentDTO
 import com.hexagonal.agent.domain.agent.Agent
 import com.hexagonal.agent.domain.agent.AgentRepository
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class AgentService(private val agentRepository: AgentRepository) {
+class AgentService(private val agentRepository: AgentRepository, private val eventPublisher: EventPublisher) {
 
     fun insert(agentDTO: AgentDTO) {
         val agentResult = Agent.build {
@@ -41,7 +42,15 @@ class AgentService(private val agentRepository: AgentRepository) {
         }
 
         when(agentResult) {
-            is ResultEntity.Success -> agentRepository.update(agent = agentResult.entity)
+            is ResultEntity.Success -> {
+                val agent = agentResult.entity
+                agentRepository.update(agent = agentResult.entity)
+                if (agent.hasDomainEvents) {
+                    agent.domainEvents.forEach {
+                        eventPublisher.publisher(it)
+                    }
+                }
+            }
             is ResultEntity.Failure -> throw BusinessException(agentResult.notifications)
         }
     }
