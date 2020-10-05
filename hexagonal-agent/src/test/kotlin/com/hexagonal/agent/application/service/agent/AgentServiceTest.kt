@@ -8,6 +8,7 @@ import com.cross.events.commons.EventPublisher
 import com.hexagonal.agent.application.dto.agent.AgentDTO
 import com.hexagonal.agent.domain.agent.Agent
 import com.hexagonal.agent.domain.agent.AgentRepository
+import com.hexagonal.agent.domain.agent.CreateAgentSpecification
 import com.hexagonal.agent.helper.createAgent
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
@@ -28,11 +29,13 @@ internal class AgentServiceTest {
 
     private val eventPublisher: EventPublisher = mock()
 
+    private val createAgentSpecification: CreateAgentSpecification = mock()
+
     private lateinit var agentService: AgentService
 
     @BeforeEach
     fun `setUp`() {
-        agentService = AgentService(agentRepository, eventPublisher)
+        agentService = AgentService(agentRepository, createAgentSpecification, eventPublisher)
     }
 
     @Test

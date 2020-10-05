@@ -1,5 +1,6 @@
 package com.hexagonal.agent.domain.agent
 
+import com.cross.domain.vo.Cpf
 import java.util.*
 
 interface AgentRepository {
@@ -10,4 +11,5 @@ interface AgentRepository {
 
     fun findById(id: UUID): Optional<Agent>
 
+    fun findByCPF(cpf: Cpf): Optional<Agent>
 }

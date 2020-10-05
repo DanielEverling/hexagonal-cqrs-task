@@ -7,14 +7,17 @@ import com.cross.events.commons.EventPublisher
 import com.hexagonal.agent.application.dto.agent.AgentDTO
 import com.hexagonal.agent.domain.agent.Agent
 import com.hexagonal.agent.domain.agent.AgentRepository
+import com.hexagonal.agent.domain.agent.CreateAgentSpecification
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class AgentService(private val agentRepository: AgentRepository, private val eventPublisher: EventPublisher) {
+class AgentService(private val agentRepository: AgentRepository,
+                   private val createAgentSpecification: CreateAgentSpecification,
+                   private val eventPublisher: EventPublisher) {
 
     fun insert(agentDTO: AgentDTO) {
-        val agentResult = Agent.build {
+        val agentResult = Agent.build(createAgentSpecification) {
             id = agentDTO.id
             name = agentDTO.name
             cpf = agentDTO.cpf
@@ -44,6 +47,7 @@ class AgentService(private val agentRepository: AgentRepository, private val eve
         when(agentResult) {
             is ResultEntity.Success -> {
                 val agent = agentResult.entity
+                agent.inactive()
                 agentRepository.update(agent = agentResult.entity)
                 if (agent.hasDomainEvents) {
                     agent.domainEvents.forEach {

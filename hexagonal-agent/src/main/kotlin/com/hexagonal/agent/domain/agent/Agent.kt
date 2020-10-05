@@ -20,7 +20,8 @@ data class Agent private constructor(val id: UUID = UUID.randomUUID(),
                                      val email: Email,
                                      val address: Address,
                                      val birthDay: LocalDate,
-                                     var active: Boolean = true): Entity(), AggregateRoot {
+                                     var active: Boolean = true,
+                                     private val specification: Specification<Agent>): Entity(), AggregateRoot {
 
     init {
         validate()
@@ -33,7 +34,8 @@ data class Agent private constructor(val id: UUID = UUID.randomUUID(),
 
     override fun validators() = listOf(
             cpf.value.isBlank(message(FIELD_REQUIRED, "CPF")),
-            birthDay.isFuture(message(BIRTHDAY_INVALID, "Data de Nascimento"))
+            birthDay.isFuture(message(BIRTHDAY_INVALID, "Data de Nascimento")),
+            specification.isSatisfiedBy(this)
     ) + name.validators() + email.validators() + cpf.validators() + address.validators()
 
 
@@ -56,7 +58,8 @@ data class Agent private constructor(val id: UUID = UUID.randomUUID(),
                     email = Email(email),
                     cpf = Cpf(cpf),
                     address = address,
-                    birthDay = birthDay)
+                    birthDay = birthDay,
+                    specification = specification)
 
             return  when(newAgent.isValid()) {
                 true -> ResultEntity.Success<Agent>(newAgent)
